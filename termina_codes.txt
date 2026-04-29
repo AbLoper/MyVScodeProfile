@@ -1,0 +1,205 @@
+📘 الدليل الشامل لإدارة وإعداد
+ Visual Studio Code (محدّث 2026)
+________________________________________
+🧭 أولًا: تنظيف VS Code
+🔥 الطريقة الموصى بها: استخدام Profiles (الأفضل)
+الخطوات:
+1.	افتح Command Palette: 
+Ctrl + Shift + P
+2.	اكتب: 
+Profiles: Create Profile
+3.	اختر: 
+Empty Profile
+4.	(اختياري) استيراد إعدادات: 
+Profiles: Import Profile
+✅ المميزات:
+•	بيئة نظيفة 100% 
+•	لا يؤثر على إعداداتك الحالية 
+•	يمكنك التبديل بسهولة 
+________________________________________
+
+🧹 الطريقة الثانية: حذف الإضافات فقط
+⚠️ ملاحظة مهمة (تحديث):
+الأمر التالي لا يعمل مباشرة في PowerShell:
+code --list-extensions | xargs -L 1 code --uninstall-extension ❌
+✅ البديل الصحيح في PowerShell:
+code --list-extensions | ForEach-Object { code --uninstall-extension $_ }
+✅ النتيجة:
+•	حذف جميع الإضافات 
+•	الاحتفاظ بالإعدادات 
+________________________________________
+🧨 إعادة ضبط كاملة (Reset)
+1️⃣ حذف الإعدادات
+📁 المسارات:
+Windows:
+C:\Users\USERNAME\AppData\Roaming\Code
+macOS:
+~/Library/Application Support/Code
+Linux:
+~/.config/Code
+________________________________________
+
+2️⃣ حذف الإضافات
+📁:
+Windows:
+C:\Users\USERNAME\.vscode
+macOS / Linux:
+~/.vscode
+________________________________________
+⚠️ ملاحظات:
+•	أغلق VS Code قبل الحذف 
+•	سيتم حذف: 
+o	الإعدادات 
+o	الإضافات 
+o	Snippets 
+o	Keybindings 
+🎯 أي طريقة تختار؟
+الهدف	الطريقة
+تجربة نظيفة بدون مخاطرة	Profile
+حذف الإضافات فقط	Terminal
+إعادة ضبط كاملة	حذف المجلدات
+________________________________________
+📦 ثانيًا: مشاركة إعدادات VS Code عبر GitHub
+📁 هيكل المشروع
+vscode-setup/
+│── settings.json
+│── keybindings.json
+│── extensions.txt
+│── snippets/
+│── README.md
+________________________________________
+
+📤 تصدير الإعدادات
+✔️ الإعدادات
+📁 Windows:
+C:\Users\USER\AppData\Roaming\Code\User
+انسخ:
+•	settings.json 
+•	keybindings.json 
+________________________________________
+✔️ الإضافات
+code --list-extensions > extensions.txt
+________________________________________
+
+📝 README (مثال محدث)
+Writing
+VS Code Setup Guide
+Install Extensions (PowerShell):
+code --list-extensions | ForEach-Object { code --install-extension $_ }
+OR from file:
+Get-Content extensions.txt | ForEach-Object { code --install-extension $_ }
+Apply Settings:
+•	Windows: %APPDATA%\Code\User
+•	macOS: ~/Library/Application Support/Code/User
+•	Linux: ~/.config/Code/User
+Copy:
+•	settings.json
+•	keybindings.json
+Restart VS Code after setup
+________________________________________
+⬆️ رفع المشروع
+git init
+git add .
+git commit -m "VSCode setup"
+git branch -M main
+git remote add origin YOUR_REPO
+git push -u origin main
+________________________________________
+👥 استخدام المشروع
+git clone YOUR_REPO
+cd vscode-setup
+ثم:
+•	تثبيت الإضافات 
+•	نسخ الإعدادات 
+________________________________________
+🔥 خيار احترافي: Settings Sync
+مدعوم داخل Visual Studio Code
+✔ مناسب:
+•	استخدام شخصي 
+❌ غير مناسب:
+•	مشاركة إعداد ثابت لفريق 
+________________________________________
+💡 نصيحة
+شارك فقط:
+•	ESLint 
+•	Prettier 
+•	Theme 
+•	إعدادات أساسية 
+⚠️ ثالثًا: مشكلة .gitignore
+❌ المشكلة
+*
+✅ الحل
+*
+!settings.json
+!keybindings.json
+!snippets/
+!snippets/**
+🔧 تطبيق التعديل
+git rm -r --cached .
+git add .
+git commit -m "fix gitignore"
+git push
+🧪 التحقق
+git status
+________________________________________
+🧰 رابعًا: إدارة الإضافات
+📋 عرض الإضافات
+code --list-extensions
+مع الإصدارات:
+code --list-extensions --show-versions
+________________________________________
+
+📄 تصدير
+code --list-extensions > extensions.txt
+📄 استيراد
+Get-Content extensions.txt | ForEach-Object { code --install-extension $_ }
+⚙️ خامسًا: حل مشاكل أمر code (🔥 مهم جدًا)
+🧠 المشكلة الشائعة
+في Windows + PowerShell:
+•	code.cmd يعمل ✔ 
+•	code لا يعمل ❌ 
+•	where code لا يظهر شيء ❌ 
+✅ الحل الصحيح النهائي
+✔ تحقق من CLI:
+where.exe code
+________________________________________
+✔ تأكد من PATH يحتوي:
+C:\Users\USERNAME\AppData\Local\Programs\Microsoft VS Code\bin
+________________________________________
+✔ إذا لم يعمل:
+🔧 حل مؤقت:
+Set-Alias code "C:\Users\USERNAME\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
+________________________________________
+🔧 حل دائم:
+افتح:
+notepad $PROFILE
+وأضف:
+Set-Alias code "C:\Users\USERNAME\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
+________________________________________
+🔁 ثم:
+•	أعد تشغيل PowerShell 
+⚠️ ملاحظات مهمة
+•	where ≠ where.exe 
+•	PowerShell أحيانًا لا يلتقط .cmd 
+•	PATH قد يكون صحيح لكن يحتاج reload 
+________________________________________
+🚀 أوامر مهمة
+code .
+code myfile.js
+code --list-extensions
+code --install-extension esbenp.prettier-vscode
+________________________________________
+🎯 الخلاصة النهائية
+✔ Profiles → أفضل حل آمن
+✔ PowerShell يحتاج أوامر خاصة (ليس مثل Linux)
+✔ code قد يحتاج alias في بعض الأنظمة
+✔ مشاركة الإعدادات عبر GitHub = احتراف
+✔ لا تكثر الإضافات بدون حاجة
+________________________________________
+💡 توصية احترافية أخيرة
+أفضل Setup لمطور Next.js:
+•	ESLint 
+•	Prettier 
+•	Tailwind IntelliSense 
+•	GitLens 
+•	Error Lens
